@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ order.tracking_code }} · Smart Delivery{% endblock %}
+{% block content %}
+<div class="breadcrumbs"><a href="{{ url_for('dashboard') }}">Dashboard</a><span>/</span>{{ order.tracking_code }}</div>
+<div class="page-head"><div><div class="eyebrow">SHIPMENT DETAILS</div><h1>{{ order.item_name }}</h1><p class="muted">Tracking ID · {{ order.tracking_code }}</p></div><span class="status status-{{ order.status }}">{{ STATUSES.get(order.status, order.status) }}</span></div>
+<div class="detail-grid"><section class="panel"><div class="panel-head"><h2>Delivery information</h2><span class="provider-pill">{{ order.provider }} shipment</span></div><div class="detail-pairs"><div><small>DELIVERY ADDRESS</small><b>{{ order.address }}</b></div><div><small>AREA / PINCODE</small><b>{{ order.area }} · {{ order.pincode }}</b></div><div><small>SELECTED SLOT</small><b>{% if order.slot %}{{ order.slot.date.strftime('%d %B %Y') }} · {{ order.slot.label }}{% else %}Not scheduled{% endif %}</b></div><div><small>ASSIGNED COURIER</small><b>{{ order.courier.name if order.courier else 'Awaiting assignment' }}</b></div></div>
+{% if current_user.role == 'customer' and order.status not in ['delivered','cancelled','failed','out_for_delivery'] %}
+<hr class="soft-hr"><h3>{% if order.slot %}Reschedule delivery{% else %}Choose your delivery slot{% endif %}</h3><p class="muted small">Slots are capacity-limited and specific to your delivery area.</p>
+<form method="post" action="{{ url_for('book_slot', order_id=order.id) }}" class="slot-form"><label>Available delivery windows<select name="slot_id" required><option value="">Select a date and time</option>{% for slot in slots %}{% if slot.remaining > 0 %}<option value="{{ slot.id }}" {% if order.slot_id == slot.id %}selected{% endif %}>{{ slot.date.strftime('%a, %d %b') }} · {{ slot.label }} · {{ slot.remaining }} spaces left</option>{% endif %}{% endfor %}</select></label><button class="btn btn-primary">Confirm slot ↗</button></form>
+{% if order.status != 'out_for_delivery' %}<form method="post" action="{{ url_for('cancel_order', order_id=order.id) }}" onsubmit="return confirm('Cancel this order?')"><button class="text-button danger-text">Cancel order</button></form>{% endif %}{% endif %}
+</section>
+<section class="panel"><h2>Delivery timeline</h2><div class="timeline">{% for event in order.events %}<div class="timeline-item"><span class="timeline-dot"></span><div><b>{{ STATUSES.get(event.status, event.status) }}</b><p>{{ event.note or '' }}</p><small>{{ event.created_at.strftime('%d %b %Y, %I:%M %p') }}</small></div></div>{% else %}<p class="muted">No updates yet.</p>{% endfor %}</div></section></div>
+{% endblock %}

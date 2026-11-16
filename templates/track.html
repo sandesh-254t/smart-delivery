@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Track a package · Smart Delivery{% endblock %}
+{% block content %}
+<div class="track-page"><div class="eyebrow">SHIPMENT VISIBILITY</div><h1>Know where it is.<br><span class="gradient-text">Know when it arrives.</span></h1><p class="muted">Enter your Smart Delivery tracking code to see the latest demo shipment status.</p>
+<form method="post" class="track-form"><input name="tracking_code" placeholder="Enter tracking ID · e.g. SD-DEMO-1001" required><button class="btn btn-primary">Track package ↗</button></form>
+{% if order %}<div class="track-result"><div><small>TRACKING ID</small><h2>{{ order.tracking_code }}</h2><p>{{ order.item_name }} · {{ order.area }}</p></div><span class="status status-{{ order.status }}">{{ STATUSES.get(order.status, order.status) }}</span><div class="track-meta"><div><small>DELIVERY WINDOW</small><b>{% if order.slot %}{{ order.slot.date }} · {{ order.slot.label }}{% else %}Not scheduled{% endif %}</b></div><div><small>LAST UPDATED</small><b>{{ order.updated_at.strftime('%d %b %Y, %I:%M %p') }}</b></div></div></div>{% endif %}
+<div class="demo-hint">Try the sample tracking code: <b>SD-DEMO-1001</b></div></div>
+{% endblock %}

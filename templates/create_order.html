@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Create order · Smart Delivery{% endblock %}
+{% block content %}
+<div class="breadcrumbs"><a href="{{ url_for('admin_dashboard') }}">Operations</a><span>/</span>Create order</div>
+<div class="form-page"><div class="eyebrow">OPERATIONS</div><h1>Create a shipment.</h1><p class="muted">Add an incoming package and make it available to the customer for scheduling.</p>
+<div class="form-card wide"><form method="post" class="form-stack"><label>Customer<select name="customer_id" required><option value="">Choose customer</option>{% for customer in customers %}<option value="{{ customer.id }}">{{ customer.name }} · {{ customer.email }}</option>{% endfor %}</select></label><label>Item / package name<input name="item_name" required placeholder="e.g. Laptop"></label><label>Delivery address<input name="address" required placeholder="Street, locality, city"></label><div class="two-fields"><label>Area<input name="area" value="Guntur" required></label><label>PIN code<input name="pincode" value="522001" required pattern="[0-9]{6}"></label></div><label>Assign courier (optional)<select name="courier_id"><option value="">Assign later</option>{% for courier in couriers %}<option value="{{ courier.id }}">{{ courier.name }}</option>{% endfor %}</select></label><button class="btn btn-primary">Create order ↗</button></form></div></div>
+{% endblock %}

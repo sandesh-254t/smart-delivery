@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Customer dashboard · Smart Delivery{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">CUSTOMER SPACE</div><h1>Good to see you, {{ current_user.name.split(' ')[0] }}.</h1><p class="muted">Your deliveries, organized around your day.</p></div><a class="btn btn-outline" href="{{ url_for('public_track') }}">Track shipment ↗</a></div>
+<div class="stat-grid"><div class="stat-card"><span>MY ORDERS</span><strong>{{ orders|length }}</strong><small>All shipments</small></div><div class="stat-card"><span>TO SCHEDULE</span><strong>{{ orders|selectattr('status','equalto','ready_to_schedule')|list|length }}</strong><small>Choose a time window</small></div><div class="stat-card"><span>DELIVERED</span><strong>{{ orders|selectattr('status','equalto','delivered')|list|length }}</strong><small>Completed orders</small></div></div>
+<div class="content-heading"><div><h2>Your packages</h2><p class="muted">Select an order to manage its delivery.</p></div></div>
+{% if orders %}
+<div class="order-list">{% for order in orders %}<a class="order-row" href="{{ url_for('order_detail', order_id=order.id) }}"><div class="package-icon">▣</div><div class="order-main"><b>{{ order.item_name }}</b><span>{{ order.tracking_code }} · {{ order.area }}</span></div><div class="order-slot">{% if order.slot %}<b>{{ order.slot.date.strftime('%d %b %Y') }}</b><span>{{ order.slot.label }}</span>{% else %}<b>Choose a slot</b><span>Delivery time not selected</span>{% endif %}</div><span class="status status-{{ order.status }}">{{ STATUSES.get(order.status, order.status) }}</span><span class="arrow">↗</span></a>{% endfor %}</div>
+{% else %}<div class="empty-state"><div>▣</div><h3>No packages yet</h3><p>Your incoming deliveries will appear here.</p></div>{% endif %}
+{% endblock %}

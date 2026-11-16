@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Log in · Smart Delivery{% endblock %}
+{% block content %}
+<div class="auth-layout"><div class="auth-aside"><div class="eyebrow">WELCOME BACK</div><h1>Delivery on<br><span class="gradient-text">your terms.</span></h1><p>Sign in to manage your orders and delivery preferences.</p><div class="auth-orbit">SD</div></div>
+<div class="form-card"><h2>Sign in</h2><p class="muted">Use your Smart Delivery account.</p><form method="post" class="form-stack"><label>Email address<input type="email" name="email" required placeholder="you@example.com"></label><label>Password<input type="password" name="password" required placeholder="Your password"></label><button class="btn btn-primary btn-full">Log in <span>→</span></button></form><p class="form-foot">New here? <a href="{{ url_for('register') }}">Create an account</a></p></div></div>
+{% endblock %}

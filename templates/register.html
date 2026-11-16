@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Create account · Smart Delivery{% endblock %}
+{% block content %}
+<div class="auth-layout"><div class="auth-aside"><div class="eyebrow">GET STARTED</div><h1>Make delivery<br><span class="gradient-text">fit your day.</span></h1><p>Create your customer account to book and manage delivery windows.</p><div class="auth-orbit">SD</div></div>
+<div class="form-card"><h2>Create account</h2><p class="muted">A few details to get you started.</p><form method="post" class="form-stack"><label>Full name<input name="name" required maxlength="100" placeholder="Your name"></label><label>Email address<input type="email" name="email" required placeholder="you@example.com"></label><label>Phone (optional)<input name="phone" placeholder="+91"></label><label>Password<input type="password" name="password" required minlength="8" placeholder="At least 8 characters"></label><button class="btn btn-primary btn-full">Create account <span>→</span></button></form><p class="form-foot">Already registered? <a href="{{ url_for('login') }}">Log in</a></p></div></div>
+{% endblock %}
